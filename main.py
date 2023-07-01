@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from datetime import datetime
+from crawler.stock import get_stock
 
 app = Flask(__name__)
 
@@ -48,6 +49,7 @@ def get_today():
 @app.route("/stock")
 def stock():
     # 爬蟲
+    stocks = get_stock()
     for stock in stocks:
         print(stock["分類"], stock["指數"])
 
