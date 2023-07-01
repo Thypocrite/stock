@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from datetime import datetime
 from crawler.stock import get_stock
+from crawler.lottery import get_lottery
 
 app = Flask(__name__)
 
@@ -46,6 +47,12 @@ def get_today():
     return date
 
 
+@app.route("/lottery")
+def lottery():
+    datas=get_lottery
+    return render_template("lottery.html", dollars=datas[0], lottorys=datas[1])
+
+
 @app.route("/stock")
 def stock():
     # 爬蟲
@@ -64,6 +71,7 @@ if __name__ == "__main__":
         {"分類": "香港恆生", "指數": "25,083.71"},
         {"分類": "上海綜合", "指數": "3,380.68"},
     ]
+    
     print(get_bmi(167, 67.5))
     # print(stock())
     app.run(debug=True)
