@@ -49,12 +49,12 @@ def get_today():
     return date
 
 
-@app.route("/lottory")
+@app.route("/lottory",methods=["GET","POST"])
 def lottory():
     return render_template("lottory.html", lottorys=get_lottory())
 
 
-@app.route("/stock")
+@app.route("/stock",methods=["GET","POST"])
 def stock():
     # 呼叫爬蟲程式
     stocks = get_stock()
@@ -63,13 +63,20 @@ def stock():
 
     return render_template("stock.html", date=get_today(), stocks=stocks)
 
-@app.route("/pm25")
+@app.route("/pm25", methods=["GET", "POST"])
 def pm25():
-    #檢查是否有勾選(get)
-    sort= request.args.get("sort")
-    print(sort)
-    columns,values =get_pm25(sort)
-    return render_template("pm25.html",sort=sort,columns=columns,values=values)
+    # 檢查是否有勾選(request.GET=>args)
+    sort = False
+    # (reguest.POST =>form)
+    if request.method == "POST":
+        sort = request.form.get("sort")
+        print(sort)
+    # None,0,0.0,'' ==> if ==>False
+    columns, values = get_pm25(sort)
+
+    return render_template(
+        "pm25.html", datetime=get_today(), sort=sort, columns=columns, values=values
+    )
 
 
 if __name__ == "__main__":

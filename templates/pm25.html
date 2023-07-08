@@ -1,45 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PM2.5即時資訊</title>
     <style>
-        form{
+        form {
             background-color: burlywood;
-            width: 200px;
+            width: 300px;
             margin: 12px;
             padding: 12px;
+            margin: 12px auto;
+        }
+
+        #updateText {
+            color: red;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #container {
+            width: 75%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        th {
+            background-color: cadetblue;
+        }
+
+        td {
+            background-color: rgb(182, 253, 255);
+        }
+
+        td:nth-child(3) {
+            background-color: rgb(54, 20, 20);
+            color: white;
         }
     </style>
 </head>
+
 <body>
-    <h1>PM2.5即時資訊</h1>
-    <form action="/pm25">
-        <input type="checkbox" name="sort" id="sort" {% if sort %}checked{% endif %}>排序
-        <button type="submit">更新</button>
-    </form> 
-    <table border="1">
-        <thead>
-            <tr>
-                {% for column in columns %}
-                <th>{{column}}</th>
+    <div id="container">
+        <h1>PM2.5即時資訊</h1>
+        {{datetime}}
+        <form action="/pm25" method="POST">
+            <input type="checkbox" name="sort" id="sort" {% if sort %}checked{% endif %}>排序
+            <button type="submit">更新</button>
+            <span id="updateText"></span>
+        </form>
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for column in columns %}
+                    <th>{{column}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for value in values %}
+                <tr>
+                    {% for data in value %}
+                    <td>{{data}}</td>
+                    {% endfor %}
+                </tr>
                 {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
+            </tbody>
 
-            {% for value in values %}
-            <tr>
-                {% for data in value %}
-                <td>{{data}}</td>   
-                {% endfor %}
-            </tr>
-            {% endfor %} 
+            <!-- {{columns}} -->
+            <!-- {{values}} -->
+        </table>
+        <script>
+            const updateTextEl = document.querySelector("#updateText");
+            console.log(updateTextEl);
 
-            
-        </tbody>
-    </table>
+            setInterval(() => {
+                updateTextEl.innerText = "更新中...";
+                location.reload();
+            }, 3000);
+
+        </script>
+    </div>
 </body>
+
 </html>
