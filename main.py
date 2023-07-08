@@ -3,6 +3,7 @@ from datetime import datetime
 from crawler.stock import get_stock
 from crawler.lottory import get_lottory
 from crawler.pm25 import get_pm25
+import json
 
 
 app = Flask(__name__)
@@ -78,6 +79,19 @@ def pm25():
         "pm25.html", datetime=get_today(), sort=sort, columns=columns, values=values
     )
 
+@app.route("/pm25-json")
+def get_pm25_json():
+    columns,values =get_pm25()
+    sites=[value[0] for value in values]
+    pm25=[value[2] for value in values]
+    # 新增耀球日期跟目前站點數量
+    json_data={"update":get_today(),"count":len(sites),"sites":sites,"pm25":pm25}
+
+    return json.dumps(json_data,ensure_ascii=False)
+
+@app.route("/pm25-charts")
+def pm25_charts():
+    return render_template("pm25-charts.html")
 
 if __name__ == "__main__":
     # print(get_bmi(167, 67.5))
