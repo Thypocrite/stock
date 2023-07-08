@@ -45,6 +45,7 @@
     </style>
 </head>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <body>
     <div id="container">
         <h1>PM2.5即時資訊</h1>
@@ -76,11 +77,12 @@
             <!-- {{values}} -->
         </table>
         <script>
-            const updateTextEl = document.querySelector("#updateText");
-            console.log(updateTextEl);
+            //const updateTextEl = document.querySelector("#updateText");
+            //console.log(updateTextEl);
 
             setInterval(() => {
-                updateTextEl.innerText = "更新中...";
+                $("#updateText").text("更新中...")
+                //updateTextEl.innerText = "更新中...";
                 location.reload();
             }, 3000);
 
