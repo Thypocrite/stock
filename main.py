@@ -1,7 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from datetime import datetime
 from crawler.stock import get_stock
-from crawler.lottery import get_lottery
+from crawler.lottory import get_lottory
+from crawler.pm25 import get_pm25
+
 
 app = Flask(__name__)
 
@@ -47,31 +49,30 @@ def get_today():
     return date
 
 
-@app.route("/lottery")
-def lottery():
-    datas=get_lottery
-    return render_template("lottery.html", dollars=datas[0], lottorys=datas[1])
+@app.route("/lottory")
+def lottory():
+    return render_template("lottory.html", lottorys=get_lottory())
 
 
 @app.route("/stock")
 def stock():
-    # 爬蟲
+    # 呼叫爬蟲程式
     stocks = get_stock()
     for stock in stocks:
         print(stock["分類"], stock["指數"])
 
     return render_template("stock.html", date=get_today(), stocks=stocks)
 
+@app.route("/pm25")
+def pm25():
+    #檢查是否有勾選(get)
+    sort= request.args.get("sort")
+    print(sort)
+    columns,values =get_pm25(sort)
+    return render_template("pm25.html",sort=sort,columns=columns,values=values)
+
 
 if __name__ == "__main__":
-    # 全域端宣告
-    stocks = [
-        {"分類": "日經指數", "指數": "22,920.30"},
-        {"分類": "韓國綜合", "指數": "2,304.59"},
-        {"分類": "香港恆生", "指數": "25,083.71"},
-        {"分類": "上海綜合", "指數": "3,380.68"},
-    ]
-    
-    print(get_bmi(167, 67.5))
+    # print(get_bmi(167, 67.5))
     # print(stock())
     app.run(debug=True)

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(94, 94, 94);
+            color: white;
+        }
+
+        #container {
+            text-align: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .date {
+            background-color: darkblue;
+            width: 200px;
+            font-size: 16px;
+        }
+
+        .idx {
+            color: white;
+        }
+
+        .error {
+            color: red;
+        }
+
+        button {
+            background-color: lawngreen;
+            width: 100px;
+            border: 0px;
+            border-radius: 3px;
+            margin-bottom: 12px;
+        }
+
+        .lottory-block {
+            background-color: white;
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .ball {
+            color: red;
+            font-size: 32px;
+            padding-bottom: 6px;
+        }
+
+        .name {
+            background-color: deeppink;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .lottory-block {
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>最新樂透資訊網</h1>
+        <form action="/lottory">
+            <button type="submit">更新</button>
+        </form>
+        {% for name,value in lottorys.items() %}
+        <div class="lottory_block">
+            <span class="name"> {{name}}</span>
+            <br>
+            {{value[0]}}
+            <p class="ball">
+                {{value[1]}}
+            </p>
+        </div>
+        {% endfor %}
+
+</body>
+
+</html>
