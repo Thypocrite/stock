@@ -79,13 +79,20 @@ def pm25():
         "pm25.html", datetime=get_today(), sort=sort, columns=columns, values=values
     )
 
-@app.route("/pm25-json")
+@app.route("/pm25-json", methods=["GET", "POST"])
 def get_pm25_json():
-    columns,values =get_pm25()
+    columns,values,lowest_data, highest_data =get_pm25()
     sites=[value[0] for value in values]
     pm25=[value[2] for value in values]
     # 新增耀球日期跟目前站點數量
-    json_data={"update":get_today(),"count":len(sites),"sites":sites,"pm25":pm25}
+    json_data={
+        "update":get_today(),
+        "count":len(sites),
+        "sites":sites,
+        "pm25":pm25,
+        "lowest_data":lowest_data,
+        "highest_data":highest_data
+        }
 
     return json.dumps(json_data,ensure_ascii=False)
 

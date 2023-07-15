@@ -8,12 +8,16 @@ def get_pm25(sort=False):
         df = pd.read_csv(url).dropna()
         columns=df.columns.tolist()
         values =df.values.tolist()
+        
+        lowest_data=df.sort_values("pm25").iloc[0][["site","pm25"]].tolist()
+        highest_data=df.sort_values("pm25").iloc[-1][["site","pm25"]].tolist()
+        
         if sort:
             values =sorted(values,key=lambda x:x[2],reverse=True)
     except Exception as e:
         print(e)
     
-    return columns,values
+    return columns,values,lowest_data,highest_data
 
 if __name__=="__main__":
     print(get_pm25(True))
