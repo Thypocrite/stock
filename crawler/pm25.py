@@ -5,7 +5,7 @@ url='https://data.epa.gov.tw/api/v2/aqx_p_02?api_key=e8dd42e6-9b8b-43f8-991e-b3d
 def get_pm25(sort=False):
     columns,values =[],[]
     try:
-        df = pd.read_csv(url)
+        df = pd.read_csv(url).dropna()
         columns=df.columns.tolist()
         values =df.values.tolist()
         if sort:
